@@ -1,14 +1,10 @@
 package dev.whyneet.ec_api.core.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class User extends Entity {
     private String id;
     private String name;
