@@ -2,6 +2,7 @@ package dev.whyneet.ec_api.frameworks.data.mongo.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -11,6 +12,9 @@ public class User {
     private String id;
     private String name;
     private String password;
+
+    @Indexed(unique = true)
     private String email;
+
     private String address;
 }
