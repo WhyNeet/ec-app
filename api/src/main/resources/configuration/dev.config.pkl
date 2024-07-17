@@ -1,0 +1,21 @@
+amends "modulepath:/Application.pkl"
+
+db {
+    mongo {
+        prefix = "mongodb"
+        host = "localhost"
+        port = 27017
+    }
+}
+
+tokens {
+    access_token {
+        secret = "bad_example_access_token_secret"
+        max_age = timeUnitToSeconds(120.s)
+    }
+
+    refresh_token {
+        secret = "bad_example_refresh_token_secret"
+        max_age = timeUnitToSeconds(120.d)
+    }
+}

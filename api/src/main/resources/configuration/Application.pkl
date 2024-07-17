@@ -1,0 +1,27 @@
+module dev.whyneet.ec_api.Application
+
+db: Database
+tokens: Tokens
+
+class Database {
+    mongo: DatabaseConnectionProperties
+}
+
+class DatabaseConnectionProperties {
+    prefix: String
+    host: String,
+    port: UInt16
+}
+
+
+class Tokens {
+    access_token: TokenProperties
+    refresh_token: TokenProperties
+}
+
+class TokenProperties {
+    secret: String,
+    max_age: UInt
+}
+
+function timeUnitToSeconds(duration: Duration): UInt = duration.toUnit("s").value
