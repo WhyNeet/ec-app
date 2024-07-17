@@ -4,10 +4,13 @@ import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.frameworks.auth.jwt.JwtConstants;
+import io.jsonwebtoken.JwtException;
 
 import java.util.HashMap;
 
 public class AccessToken extends Token {
+    public static final String COOKIE_NAME = "access_token";
+
     public AccessToken(String id, String subject) {
         super(id, subject);
     }
@@ -16,7 +19,7 @@ public class AccessToken extends Token {
         return new AccessToken(refreshToken.getId(), refreshToken.getSubject());
     }
 
-    public static AccessToken decode(String token, IJwtDecoder decoder) {
+    public static AccessToken decode(String token, IJwtDecoder decoder) throws JwtException {
         Token parsedToken = decoder.decodeToken(token, JwtConstants.JWT_AT_KEY);
         return (AccessToken) parsedToken;
     }
