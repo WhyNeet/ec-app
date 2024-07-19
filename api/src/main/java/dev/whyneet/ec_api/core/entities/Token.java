@@ -2,14 +2,18 @@ package dev.whyneet.ec_api.core.entities;
 
 import io.jsonwebtoken.Claims;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.function.Function;
 
 @Data
+@Document(collection = "tokens")
 public class Token {
-    private Claims claims;
+    @Id
     private String id;
+    private Claims claims;
     private String subject;
 
     public Token(Claims claims) {
