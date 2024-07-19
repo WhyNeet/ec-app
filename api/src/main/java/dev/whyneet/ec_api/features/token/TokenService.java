@@ -1,8 +1,7 @@
 package dev.whyneet.ec_api.features.token;
 
-import dev.whyneet.ec_api.core.abstracts.IDataRepository;
+import dev.whyneet.ec_api.core.abstracts.IDataServices;
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
-import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.RefreshToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.TokenPair;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TokenService {
     @Autowired
-    private IDataRepository<Token, String> tokenRepository;
+    private IDataServices dataServices;
     @Autowired
     private IJwtEncoder jwtEncoder;
 
@@ -22,7 +21,7 @@ public class TokenService {
         RefreshToken refreshToken = oldTokenId == null ? RefreshToken.create(userId) : new RefreshToken(oldTokenId, userId);
         AccessToken accessToken = AccessToken.create(refreshToken);
 
-        tokenRepository.save(refreshToken);
+        dataServices.tokens().save(refreshToken);
 
         return new TokenPair(accessToken, refreshToken);
     }
