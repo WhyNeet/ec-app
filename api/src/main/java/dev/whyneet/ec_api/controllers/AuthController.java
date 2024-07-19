@@ -6,7 +6,6 @@ import dev.whyneet.ec_api.core.entities.User;
 import dev.whyneet.ec_api.features.user.UserFactory;
 import dev.whyneet.ec_api.features.user.UserService;
 import dev.whyneet.ec_api.frameworks.exception.exceptions.UserException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +20,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signup(@RequestBody CreateUserDto createUserDto) throws UserException.UserAlreadyExists {
-        User user;
-
-        try {
-            user = userService.createUser(createUserDto);
-        } catch (DuplicateKeyException ex) {
-            throw new UserException.UserAlreadyExists();
-        }
+        User user = userService.createUser(createUserDto);
 
         return ResponseEntity.ok(userFactory.toDto(user));
     }
