@@ -5,6 +5,11 @@ import java.util.Optional;
 public interface IApplicationDatabasePropertiesConfiguration {
     String prefix();
     String host();
-    Optional<String> password();
+    IApplicationDatabaseAuthPropertiesConfiguration auth();
     short port();
+
+    interface IApplicationDatabaseAuthPropertiesConfiguration {
+        String username();
+        String password();
+    }
 }

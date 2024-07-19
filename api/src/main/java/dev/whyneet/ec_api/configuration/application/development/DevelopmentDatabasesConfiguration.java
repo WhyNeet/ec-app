@@ -3,8 +3,6 @@ package dev.whyneet.ec_api.configuration.application.development;
 import dev.whyneet.ec_api.core.abstracts.configuration.IApplicationDatabasePropertiesConfiguration;
 import dev.whyneet.ec_api.core.abstracts.configuration.IApplicationDatabasesConfiguration;
 
-import java.util.Optional;
-
 public class DevelopmentDatabasesConfiguration implements IApplicationDatabasesConfiguration {
     public static class DevelopmentDatabasesMongoConfiguration implements IApplicationDatabasePropertiesConfiguration {
         @Override
@@ -18,13 +16,25 @@ public class DevelopmentDatabasesConfiguration implements IApplicationDatabasesC
         }
 
         @Override
-        public Optional<String> password() {
-            return Optional.empty();
+        public IApplicationDatabaseAuthPropertiesConfiguration auth() {
+            return new MongoAuthProperties();
         }
 
         @Override
         public short port() {
             return 27017;
+        }
+
+        public static class MongoAuthProperties implements IApplicationDatabaseAuthPropertiesConfiguration {
+            @Override
+            public String username() {
+                return "root";
+            }
+
+            @Override
+            public String password() {
+                return "root";
+            }
         }
     }
 

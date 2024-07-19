@@ -21,10 +21,15 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        String uri = String.format("%s://%s%s:%d", configuration.databases().mongo().prefix(), configuration.databases().mongo().host(), configuration.databases().mongo().password().map(password -> '@' + password).orElse(""), configuration.databases().mongo().port());
+        String uri = String.format("%s://%s:%s@%s:%d", configuration.databases().mongo().prefix(), configuration.databases().mongo().auth().username(), configuration.databases().mongo().auth().password(), configuration.databases().mongo().host(), configuration.databases().mongo().port());
         ConnectionString connectionString = new ConnectionString(uri);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder().applyConnectionString(connectionString).build();
 
         return MongoClients.create(mongoClientSettings);
+    }
+
+    @Override
+    protected boolean autoIndexCreation() {
+        return true;
     }
 }
