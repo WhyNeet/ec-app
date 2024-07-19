@@ -23,11 +23,11 @@ public class DevelopmentTokensConfiguration implements IApplicationTokensConfigu
 
     @Override
     public IApplicationTokenPropertiesConfiguration accessToken() {
-        return new DevelopmentTokenPropertiesConfiguration("bad_example_access_token_secret", 120);
+        return new DevelopmentTokenPropertiesConfiguration("b4/46CGBjeTYGBJN8UAVTvU1CNb2MIelQRHshFqNRig=", 120);
     }
 
     @Override
     public IApplicationTokenPropertiesConfiguration refreshToken() {
-        return new DevelopmentTokenPropertiesConfiguration("bad_example_refresh_token_secret", 60 * 60 * 24 * 120);
+        return new DevelopmentTokenPropertiesConfiguration("UTAHQ3wN2v1wz0NyTgPN51K4mCg+Ck5v2QGnUx+pyIA=", 60 * 60 * 24 * 120);
     }
 }
