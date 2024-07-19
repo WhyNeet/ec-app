@@ -3,7 +3,7 @@ package dev.whyneet.ec_api.frameworks.auth.jwt.token;
 import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.entities.Token;
-import dev.whyneet.ec_api.frameworks.auth.jwt.JwtConstants;
+import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import io.jsonwebtoken.JwtException;
 import org.bson.types.ObjectId;
 
@@ -24,7 +24,7 @@ public class RefreshToken extends Token {
     }
 
     public static RefreshToken decode(String token, IJwtDecoder decoder) throws JwtException {
-        Token parsedToken = decoder.decodeToken(token, JwtConstants.JWT_RT_KEY);
+        Token parsedToken = decoder.decodeToken(token, TokenType.REFRESH);
         return (RefreshToken) parsedToken;
     }
 
@@ -32,6 +32,6 @@ public class RefreshToken extends Token {
         Map<String, Object> claims = new HashMap<>();
         claims.put("rti", getId());
 
-        return encoder.encodeToken(claims, null, getSubject(), JwtConstants.JWT_RT_MAX_AGE, JwtConstants.JWT_RT_KEY);
+        return encoder.encodeToken(claims, null, getSubject(), TokenType.REFRESH);
     }
 }
