@@ -3,6 +3,7 @@ package dev.whyneet.ec_api.core.entities;
 import io.jsonwebtoken.Claims;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.function.Function;
 public class Token {
     @Id
     private String id;
+    @Transient
     private Claims claims;
     private String subject;
 
