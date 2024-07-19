@@ -39,7 +39,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        AccessToken token = AccessToken.decode(tokenString.get(), decoder);
+        AccessToken token;
+
+        try {
+            token = AccessToken.decode(tokenString.get(), decoder);
+        } catch (Exception ex) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         Optional<User> user = userService.getUserById(token.getSubject());
 
