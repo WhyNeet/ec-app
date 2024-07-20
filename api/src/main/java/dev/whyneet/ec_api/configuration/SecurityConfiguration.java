@@ -1,6 +1,6 @@
 package dev.whyneet.ec_api.configuration;
 
-import dev.whyneet.ec_api.frameworks.auth.jwt.JwtAuthFilter;
+import dev.whyneet.ec_api.frameworks.auth.jwt.filters.JwtAuthFilter;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.RefreshToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
