@@ -21,7 +21,7 @@ public class AccessToken extends Token {
 
     public static AccessToken decode(String token, IJwtDecoder decoder) throws JwtException {
         Token parsedToken = decoder.decodeToken(token, TokenType.ACCESS);
-        return (AccessToken) parsedToken;
+        return new AccessToken(parsedToken.getId(), parsedToken.getSubject());
     }
 
     public String encode(IJwtEncoder encoder) {

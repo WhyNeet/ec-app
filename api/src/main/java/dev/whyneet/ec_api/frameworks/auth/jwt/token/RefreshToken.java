@@ -25,7 +25,7 @@ public class RefreshToken extends Token {
 
     public static RefreshToken decode(String token, IJwtDecoder decoder) throws JwtException {
         Token parsedToken = decoder.decodeToken(token, TokenType.REFRESH);
-        return (RefreshToken) parsedToken;
+        return new RefreshToken(parsedToken.getId(), parsedToken.getSubject());
     }
 
     public String encode(IJwtEncoder encoder) {

@@ -16,6 +16,7 @@ public class Token {
     private String id;
     @Transient
     private Claims claims;
+    @Transient
     private String subject;
 
     public Token(Claims claims) {
@@ -38,6 +39,6 @@ public class Token {
     }
 
     public boolean isRefreshToken() {
-        return claims.containsValue("rti");
+        return claims.containsKey("rti");
     }
 }
