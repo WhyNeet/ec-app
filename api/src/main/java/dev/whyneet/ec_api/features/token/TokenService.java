@@ -2,6 +2,7 @@ package dev.whyneet.ec_api.features.token;
 
 import dev.whyneet.ec_api.core.abstracts.IDataServices;
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
+import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.RefreshToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.TokenPair;
@@ -18,7 +19,9 @@ public class TokenService {
     private IJwtEncoder jwtEncoder;
 
     public TokenPair generateTokenPair(String userId, String oldTokenId) {
-        RefreshToken refreshToken = oldTokenId == null ? RefreshToken.create(userId) : new RefreshToken(oldTokenId, userId);
+        if (oldTokenId != null) dataServices.tokens().deleteById(oldTokenId);
+
+        RefreshToken refreshToken = RefreshToken.create(userId);
         AccessToken accessToken = AccessToken.create(refreshToken);
 
         dataServices.tokens().save(refreshToken);
@@ -39,5 +42,9 @@ public class TokenService {
 
         response.addCookie(refreshTokenCookie);
         response.addCookie(accessTokenCookie);
+    }
+
+    public boolean tokenExists(Token token) {
+        return dataServices.tokens().getById(token.getId()).isPresent();
     }
 }
