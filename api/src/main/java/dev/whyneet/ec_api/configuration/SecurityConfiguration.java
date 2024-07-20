@@ -22,7 +22,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests.requestMatchers("**").permitAll())
+        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/users/me").authenticated().requestMatchers("**").permitAll())
                 .logout((logout) -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").deleteCookies(AccessToken.COOKIE_NAME, RefreshToken.COOKIE_NAME).permitAll())
                 .csrf(AbstractHttpConfigurer::disable).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
