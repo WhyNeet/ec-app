@@ -1,6 +1,7 @@
 package dev.whyneet.ec_api.configuration;
 
 import dev.whyneet.ec_api.frameworks.auth.jwt.filters.JwtAuthFilter;
+import dev.whyneet.ec_api.frameworks.auth.jwt.filters.TokenRefreshFilter;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.RefreshToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+    @Autowired
+    private TokenRefreshFilter tokenRefreshFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests.requestMatchers("**").permitAll())
-                .logout((logout) -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").deleteCookies(AccessToken.COOKIE_NAME, RefreshToken.COOKIE_NAME).permitAll())
-                .csrf(AbstractHttpConfigurer::disable).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .logout((logout) -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/")
+                        .deleteCookies(AccessToken.COOKIE_NAME, RefreshToken.COOKIE_NAME).permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenRefreshFilter, JwtAuthFilter.class);
 
         return http.build();
     }

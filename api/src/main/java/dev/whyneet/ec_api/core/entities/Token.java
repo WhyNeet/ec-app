@@ -2,6 +2,7 @@ package dev.whyneet.ec_api.core.entities;
 
 import io.jsonwebtoken.Claims;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "tokens")
 public class Token {
     @Id

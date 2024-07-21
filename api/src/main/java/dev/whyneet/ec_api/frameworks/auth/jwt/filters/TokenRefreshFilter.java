@@ -9,14 +9,19 @@ import dev.whyneet.ec_api.frameworks.auth.jwt.token.TokenPair;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Order(0)
+@Component
 public class TokenRefreshFilter extends OncePerRequestFilter {
     @Autowired
     private IJwtDecoder jwtDecoder;
@@ -65,8 +70,17 @@ public class TokenRefreshFilter extends OncePerRequestFilter {
         }
 
         TokenPair tokenPair = tokenService.generateTokenPair(refreshToken.getSubject(), refreshToken.getId());
-        tokenService.setCookies(response, tokenPair);
+        Cookie accessTokenCookie = tokenService.getAccessTokenCookie(tokenPair.getAccessToken());
+        Cookie refreshTokenCookie = tokenService.getRefreshTokenCookie(tokenPair.getRefreshToken());
 
-        filterChain.doFilter(request, response);
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        CustomizableHttpServletRequestWrapper customizableHttpServletRequestWrapper = new CustomizableHttpServletRequestWrapper(request);
+        customizableHttpServletRequestWrapper.replaceCookie(accessTokenCookie);
+        customizableHttpServletRequestWrapper.replaceCookie(refreshTokenCookie);
+
+
+        filterChain.doFilter(customizableHttpServletRequestWrapper, response);
     }
 }

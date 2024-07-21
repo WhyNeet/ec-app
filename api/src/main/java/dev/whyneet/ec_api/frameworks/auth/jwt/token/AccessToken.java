@@ -5,9 +5,11 @@ import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import io.jsonwebtoken.JwtException;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 
+@NoArgsConstructor
 public class AccessToken extends Token {
     public static final String COOKIE_NAME = "access_token";
 

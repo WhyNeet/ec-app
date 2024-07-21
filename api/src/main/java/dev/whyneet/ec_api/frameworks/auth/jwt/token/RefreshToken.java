@@ -5,11 +5,13 @@ import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import io.jsonwebtoken.JwtException;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor
 public class RefreshToken extends Token {
     public static final String COOKIE_NAME = "refresh_token";
 

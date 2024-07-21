@@ -29,16 +29,29 @@ public class TokenService {
         return new TokenPair(accessToken, refreshToken);
     }
 
-    public void setCookies(HttpServletResponse response, TokenPair tokenPair) {
-        String refreshToken = tokenPair.getRefreshToken().encode(jwtEncoder);
-        String accessToken = tokenPair.getAccessToken().encode(jwtEncoder);
+    public Cookie getAccessTokenCookie(AccessToken token) {
+        String accessToken = token.encode(jwtEncoder);
+
+        Cookie accessTokenCookie = new Cookie(AccessToken.COOKIE_NAME, accessToken);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setHttpOnly(true);
+
+        return accessTokenCookie;
+    }
+
+    public Cookie getRefreshTokenCookie(RefreshToken token) {
+        String refreshToken = token.encode(jwtEncoder);
 
         Cookie refreshTokenCookie = new Cookie(RefreshToken.COOKIE_NAME, refreshToken);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setHttpOnly(true);
-        Cookie accessTokenCookie = new Cookie(AccessToken.COOKIE_NAME, accessToken);
-        accessTokenCookie.setPath("/");
-        accessTokenCookie.setHttpOnly(true);
+
+        return refreshTokenCookie;
+    }
+
+    public void setCookies(HttpServletResponse response, TokenPair tokenPair) {
+        Cookie accessTokenCookie = getAccessTokenCookie(tokenPair.getAccessToken());
+        Cookie refreshTokenCookie = getRefreshTokenCookie(tokenPair.getRefreshToken());
 
         response.addCookie(refreshTokenCookie);
         response.addCookie(accessTokenCookie);
