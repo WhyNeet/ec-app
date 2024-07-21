@@ -7,6 +7,7 @@ import dev.whyneet.ec_api.frameworks.exception.exceptions.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,9 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return dataServices.users().findOne(Example.of(new User(null, null, null, email, null)));
     }
 }

@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 public class CustomizableHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-    private ArrayList<Cookie> cookies;
+    private final ArrayList<Cookie> cookies;
 
     public CustomizableHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
