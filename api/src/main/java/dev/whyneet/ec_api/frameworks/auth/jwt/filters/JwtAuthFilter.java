@@ -2,6 +2,7 @@ package dev.whyneet.ec_api.frameworks.auth.jwt.filters;
 
 import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
 import dev.whyneet.ec_api.core.entities.User;
+import dev.whyneet.ec_api.features.token.TokenService;
 import dev.whyneet.ec_api.features.user.UserService;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
@@ -30,6 +31,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> tokenString = FilterUtil.getToken(request, TokenType.ACCESS);
@@ -44,6 +48,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             token = AccessToken.decode(tokenString.get(), decoder);
         } catch (Exception ex) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (!tokenService.tokenExists(token)) {
             filterChain.doFilter(request, response);
             return;
         }
