@@ -42,7 +42,6 @@ public class TokenRefreshFilter extends OncePerRequestFilter {
                 AccessToken.decode(accessTokenString.get(), jwtDecoder);
             } catch (ExpiredJwtException ex) {
                 doRefresh = true;
-                System.out.println("perform an access token refresh");
             }
         }
 
@@ -59,8 +58,6 @@ public class TokenRefreshFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println("refresh token: " + refreshToken.getId());
 
         if (!tokenService.tokenExists(refreshToken)) {
             filterChain.doFilter(request, response);

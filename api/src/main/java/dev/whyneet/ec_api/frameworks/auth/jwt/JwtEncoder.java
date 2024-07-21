@@ -20,8 +20,6 @@ public class JwtEncoder implements IJwtEncoder {
         long maxAge = tokenType == TokenType.ACCESS ? configuration.tokens().accessToken()
                 .maxAge() : configuration.tokens().refreshToken().maxAge();
 
-        System.out.println("maxage: " + maxAge);
-
         Date exp = new Date(System.currentTimeMillis() + maxAge * 1000);
 
         Key key = tokenType == TokenType.ACCESS ? KeyUtil.keyFromString(configuration.tokens().accessToken()
