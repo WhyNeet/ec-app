@@ -15,6 +15,7 @@ public class Seller {
     private String businessName;
     @Indexed(unique = true)
     private String taxId;
+    private String password;
     private boolean verified;
     private String description;
 }
