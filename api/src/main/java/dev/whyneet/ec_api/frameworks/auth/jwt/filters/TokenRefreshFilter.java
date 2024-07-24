@@ -1,6 +1,7 @@
 package dev.whyneet.ec_api.frameworks.auth.jwt.filters;
 
 import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
+import dev.whyneet.ec_api.core.entities.TokenAudience;
 import dev.whyneet.ec_api.features.token.TokenService;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import dev.whyneet.ec_api.frameworks.auth.jwt.token.AccessToken;
@@ -69,7 +70,7 @@ public class TokenRefreshFilter extends OncePerRequestFilter {
             return;
         }
 
-        TokenPair tokenPair = tokenService.generateTokenPair(refreshToken.getAudience(), refreshToken.getSubject(), refreshToken.getId());
+        TokenPair tokenPair = tokenService.generateTokenPair(refreshToken.getAudience() == null ? TokenAudience.User : refreshToken.getAudience(), refreshToken.getSubject(), refreshToken.getId());
         Cookie accessTokenCookie = tokenService.getAccessTokenCookie(tokenPair.getAccessToken());
         Cookie refreshTokenCookie = tokenService.getRefreshTokenCookie(tokenPair.getRefreshToken());
 

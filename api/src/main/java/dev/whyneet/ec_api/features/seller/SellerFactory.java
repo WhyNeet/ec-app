@@ -12,6 +12,6 @@ public class SellerFactory {
     }
 
     public SellerDto toDto(Seller seller) {
-        return new SellerDto(seller.getId(), seller.getBusinessName(), seller.getBusinessShortName(), seller.getDescription(), seller.isVerified());
+        return new SellerDto(seller.getId(), seller.getBusinessName(), seller.getBusinessShortName(), seller.getDescription(), seller.getVerified());
     }
 }

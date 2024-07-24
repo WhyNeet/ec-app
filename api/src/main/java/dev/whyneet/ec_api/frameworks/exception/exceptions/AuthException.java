@@ -16,4 +16,10 @@ public class AuthException {
             super("Wrong credentials.", "Invalid email or password.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static class WrongSellerCredentials extends CommonException {
+        public WrongSellerCredentials() {
+            super("Wrong credentials.", "Invalid short business name or password.", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
