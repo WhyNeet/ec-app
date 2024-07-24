@@ -5,6 +5,7 @@ import dev.whyneet.ec_api.core.dtos.seller.CreateSellerDto;
 import dev.whyneet.ec_api.core.entities.Seller;
 import dev.whyneet.ec_api.frameworks.exception.exceptions.SellerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class SellerService {
     @Autowired
     private SellerFactory sellerFactory;
     @Autowired
+    @Lazy
     private PasswordEncoder passwordEncoder;
 
     public Seller createSeller(CreateSellerDto createSellerDto) throws SellerException.SellerAlreadyExists {
