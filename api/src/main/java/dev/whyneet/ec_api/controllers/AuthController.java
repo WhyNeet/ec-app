@@ -3,6 +3,7 @@ package dev.whyneet.ec_api.controllers;
 import dev.whyneet.ec_api.core.dtos.user.CreateUserDto;
 import dev.whyneet.ec_api.core.dtos.user.UserCredentialsDto;
 import dev.whyneet.ec_api.core.dtos.user.UserDto;
+import dev.whyneet.ec_api.core.entities.TokenAudience;
 import dev.whyneet.ec_api.core.entities.User;
 import dev.whyneet.ec_api.features.token.TokenService;
 import dev.whyneet.ec_api.features.user.UserFactory;
@@ -34,7 +35,7 @@ public class AuthController {
     public ResponseEntity<UserDto> signup(@RequestBody CreateUserDto createUserDto, HttpServletResponse response) throws UserException.UserAlreadyExists {
         User user = userService.createUser(createUserDto);
 
-        TokenPair tokenPair = tokenService.generateTokenPair(user.getId(), null);
+        TokenPair tokenPair = tokenService.generateTokenPair(TokenAudience.User, user.getId(), null);
         tokenService.setCookies(response, tokenPair);
 
         return ResponseEntity.ok(userFactory.toDto(user));
@@ -47,7 +48,7 @@ public class AuthController {
         if (user.isEmpty()) throw new UserException.UserDoesNotExist();
         if (!passwordEncoder.matches(userCredentialsDto.password(), user.get().getPassword())) throw new AuthException.WrongUserCredentials();
 
-        TokenPair tokenPair = tokenService.generateTokenPair(user.get().getId(), null);
+        TokenPair tokenPair = tokenService.generateTokenPair(TokenAudience.User, user.get().getId(), null);
         tokenService.setCookies(response, tokenPair);
 
         return ResponseEntity.ok(userFactory.toDto(user.get()));

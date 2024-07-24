@@ -3,6 +3,7 @@ package dev.whyneet.ec_api.frameworks.auth.jwt.token;
 import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.entities.Token;
+import dev.whyneet.ec_api.core.entities.TokenAudience;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
 import io.jsonwebtoken.JwtException;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,12 @@ public class AccessToken extends Token {
         super(id, subject);
     }
 
+    public AccessToken(String id, String subject, TokenAudience audience) {
+        super(id, subject, audience);
+    }
+
     public static AccessToken create(RefreshToken refreshToken) {
-        return new AccessToken(refreshToken.getId(), refreshToken.getSubject());
+        return new AccessToken(refreshToken.getId(), refreshToken.getSubject(), refreshToken.getAudience());
     }
 
     public static AccessToken decode(String token, IJwtDecoder decoder) throws JwtException {
@@ -27,6 +32,6 @@ public class AccessToken extends Token {
     }
 
     public String encode(IJwtEncoder encoder) {
-        return encoder.encodeToken(new HashMap<>(), getId(), getSubject(), TokenType.ACCESS);
+        return encoder.encodeToken(new HashMap<>(), getId(), getSubject(), getAudience(), TokenType.ACCESS);
     }
 }

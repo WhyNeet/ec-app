@@ -69,7 +69,7 @@ public class TokenRefreshFilter extends OncePerRequestFilter {
             return;
         }
 
-        TokenPair tokenPair = tokenService.generateTokenPair(refreshToken.getSubject(), refreshToken.getId());
+        TokenPair tokenPair = tokenService.generateTokenPair(refreshToken.getAudience(), refreshToken.getSubject(), refreshToken.getId());
         Cookie accessTokenCookie = tokenService.getAccessTokenCookie(tokenPair.getAccessToken());
         Cookie refreshTokenCookie = tokenService.getRefreshTokenCookie(tokenPair.getRefreshToken());
 

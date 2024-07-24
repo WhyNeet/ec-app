@@ -20,16 +20,26 @@ public class Token {
     private Claims claims;
     @Transient
     private String subject;
+    private TokenAudience audience;
 
     public Token(Claims claims) {
         this.claims = claims;
         this.id = isRefreshToken() ? extractClaim(c -> c.get("rti", String.class)) : extractClaim(Claims::getId);
         this.subject = extractClaim(Claims::getSubject);
+
+        var audClaim = extractClaim(Claims::getAudience).stream().findFirst();
+        this.audience = audClaim.map(TokenAudience::valueOf).orElse(TokenAudience.User);
     }
 
     public Token(String id, String subject) {
         this.id = id;
         this.subject = subject;
+    }
+
+    public Token(String id, String subject, TokenAudience audience) {
+        this.id = id;
+        this.subject = subject;
+        this.audience = audience;
     }
 
     public boolean isExpired() {

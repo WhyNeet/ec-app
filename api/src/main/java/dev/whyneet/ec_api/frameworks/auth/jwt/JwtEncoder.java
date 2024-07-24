@@ -2,6 +2,7 @@ package dev.whyneet.ec_api.frameworks.auth.jwt;
 
 import dev.whyneet.ec_api.core.abstracts.IJwtEncoder;
 import dev.whyneet.ec_api.core.abstracts.configuration.IApplicationConfiguration;
+import dev.whyneet.ec_api.core.entities.TokenAudience;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +15,7 @@ public class JwtEncoder implements IJwtEncoder {
     private IApplicationConfiguration configuration;
 
     @Override
-    public String encodeToken(Map<String, Object> claims, String id, String subject, TokenType tokenType) {
+    public String encodeToken(Map<String, Object> claims, String id, String subject, TokenAudience audience, TokenType tokenType) {
         Date iss = new Date(System.currentTimeMillis());
 
         long maxAge = tokenType == TokenType.ACCESS ? configuration.tokens().accessToken()
@@ -25,7 +26,7 @@ public class JwtEncoder implements IJwtEncoder {
         Key key = tokenType == TokenType.ACCESS ? KeyUtil.keyFromString(configuration.tokens().accessToken()
                 .secret()) : KeyUtil.keyFromString(configuration.tokens().refreshToken().secret());
 
-        return Jwts.builder().claims(claims).subject(subject).issuedAt(iss).expiration(exp).id(id).signWith(key)
+        return Jwts.builder().claims(claims).subject(subject).audience().add(audience.toString()).and().issuedAt(iss).expiration(exp).id(id).signWith(key)
                 .compact();
     }
 }
