@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.3.2")
 
     implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
 
