@@ -1,0 +1,38 @@
+package dev.whyneet.ec_api.features.seller;
+
+import dev.whyneet.ec_api.core.abstracts.IDataServices;
+import dev.whyneet.ec_api.core.dtos.seller.CreateSellerDto;
+import dev.whyneet.ec_api.core.entities.Seller;
+import dev.whyneet.ec_api.frameworks.exception.exceptions.SellerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SellerService {
+    @Autowired
+    private IDataServices dataServices;
+    @Autowired
+    private SellerFactory sellerFactory;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Seller createSeller(CreateSellerDto createSellerDto) throws SellerException.SellerAlreadyExists {
+        Seller seller = sellerFactory.fromCreateDto(createSellerDto);
+
+        String hashedPassword = passwordEncoder.encode(seller.getPassword());
+        String hashedTaxId = passwordEncoder.encode(seller.getTaxId());
+
+        seller.setPassword(hashedPassword);
+        seller.setTaxId(hashedTaxId);
+
+        try {
+            seller = dataServices.sellers().save(seller);
+        } catch (DuplicateKeyException ex) {
+            throw new SellerException.SellerAlreadyExists();
+        }
+
+        return seller;
+    }
+}
