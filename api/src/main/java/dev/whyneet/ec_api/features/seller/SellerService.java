@@ -9,6 +9,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SellerService {
     @Autowired
@@ -34,5 +36,9 @@ public class SellerService {
         }
 
         return seller;
+    }
+
+    public Optional<Seller> getSellerById(String sellerId) {
+        return dataServices.sellers().getById(sellerId);
     }
 }

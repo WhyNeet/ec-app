@@ -1,7 +1,10 @@
 package dev.whyneet.ec_api.frameworks.auth.jwt.filters;
 
 import dev.whyneet.ec_api.core.abstracts.IJwtDecoder;
+import dev.whyneet.ec_api.core.entities.Seller;
+import dev.whyneet.ec_api.core.entities.TokenAudience;
 import dev.whyneet.ec_api.core.entities.User;
+import dev.whyneet.ec_api.features.seller.SellerService;
 import dev.whyneet.ec_api.features.token.TokenService;
 import dev.whyneet.ec_api.features.user.UserService;
 import dev.whyneet.ec_api.frameworks.auth.jwt.TokenType;
@@ -32,6 +35,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UserService userService;
 
     @Autowired
+    private SellerService sellerService;
+
+    @Autowired
     private TokenService tokenService;
 
     @Override
@@ -57,14 +63,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        Optional<User> user = userService.getUserById(token.getSubject());
+        Optional<Object> authorizedEntity;
 
-        if (user.isEmpty()) {
+        if (token.getAudience() == TokenAudience.User) {
+            Optional<User> user = userService.getUserById(token.getSubject());
+            authorizedEntity = user.map(u -> u);
+        } else {
+            Optional<Seller> seller = sellerService.getSellerById(token.getSubject());
+            authorizedEntity = seller.map(s -> s);
+        }
+
+
+        if (authorizedEntity.isEmpty()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken.authenticated(user.get(), null, new ArrayList<>());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken.authenticated(authorizedEntity.get(), null, new ArrayList<>());
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
