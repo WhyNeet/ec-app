@@ -7,6 +7,7 @@ import dev.whyneet.ec_api.frameworks.exception.exceptions.SellerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,9 @@ public class SellerService {
 
     public Optional<Seller> getSellerById(String sellerId) {
         return dataServices.sellers().getById(sellerId);
+    }
+
+    public Optional<Seller> getSellerByShortBusinessName(String sellerShortBusinessName) {
+        return dataServices.sellers().findOne(Example.of(new Seller(null, null, sellerShortBusinessName, null, null, null, null)));
     }
 }
