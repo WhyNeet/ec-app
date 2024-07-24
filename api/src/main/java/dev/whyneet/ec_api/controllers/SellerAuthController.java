@@ -12,6 +12,7 @@ import dev.whyneet.ec_api.frameworks.exception.exceptions.SellerException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class SellerAuthController {
     private TokenService tokenService;
 
     @PostMapping("/create")
-    public ResponseEntity<SellerDto> createSeller(@RequestBody CreateSellerDto createSellerDto, HttpServletResponse response) throws SellerException.SellerAlreadyExists {
+    public ResponseEntity<SellerDto> createSeller(@RequestBody @Validated CreateSellerDto createSellerDto, HttpServletResponse response) throws SellerException.SellerAlreadyExists {
         Seller seller = sellerService.createSeller(createSellerDto);
 
         TokenPair tokenPair = tokenService.generateTokenPair(TokenAudience.Seller, seller.getId(), null);
