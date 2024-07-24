@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(@RequestBody CreateUserDto createUserDto, HttpServletResponse response) throws UserException.UserAlreadyExists {
+    public ResponseEntity<UserDto> signup(@RequestBody @Validated CreateUserDto createUserDto, HttpServletResponse response) throws UserException.UserAlreadyExists {
         User user = userService.createUser(createUserDto);
 
         TokenPair tokenPair = tokenService.generateTokenPair(TokenAudience.User, user.getId(), null);
@@ -42,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody UserCredentialsDto userCredentialsDto, HttpServletResponse response) throws UserException.UserDoesNotExist, AuthException.WrongUserCredentials {
+    public ResponseEntity<UserDto> login(@RequestBody @Validated UserCredentialsDto userCredentialsDto, HttpServletResponse response) throws UserException.UserDoesNotExist, AuthException.WrongUserCredentials {
         Optional<User> user = userService.findUserByEmail(userCredentialsDto.email());
 
         if (user.isEmpty()) throw new UserException.UserDoesNotExist();
