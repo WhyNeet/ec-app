@@ -3,6 +3,8 @@ package dev.whyneet.ec_api.features.product;
 import dev.whyneet.ec_api.core.abstracts.IDataServices;
 import dev.whyneet.ec_api.core.dtos.product.CreateProductDto;
 import dev.whyneet.ec_api.core.entities.Product;
+import dev.whyneet.ec_api.core.entities.Seller;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class ProductService {
     @Autowired
     private IDataServices dataServices;
 
-    public Product createProduct(CreateProductDto createProductDto, String sellerId) {
+    public Product createProduct(CreateProductDto createProductDto, ObjectId sellerId) {
         Product product = productFactory.fromCreateDto(createProductDto, sellerId);
 
         return dataServices.products().save(product);
@@ -27,7 +29,7 @@ public class ProductService {
         return dataServices.products().getById(productId);
     }
 
-    public List<Product> getProductBySellerId(String sellerId) {
-        return dataServices.products().findAll(Example.of(new Product(null, null, null, null, null, sellerId, null)));
+    public List<Product> getProductBySellerId(ObjectId sellerId) {
+        return dataServices.products().findAll(Example.of(new Product(null, null, null, null, null, sellerId)));
     }
 }

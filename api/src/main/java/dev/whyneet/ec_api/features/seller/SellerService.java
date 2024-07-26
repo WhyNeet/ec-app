@@ -46,6 +46,6 @@ public class SellerService {
     }
 
     public Optional<Seller> getSellerByShortBusinessName(String sellerShortBusinessName) {
-        return dataServices.sellers().findOne(Example.of(new Seller(null, null, sellerShortBusinessName, null, null, null, null)));
+        return dataServices.sellers().findOne(Example.of(new Seller(null, null, sellerShortBusinessName, null, null, null, null, null)));
     }
 }

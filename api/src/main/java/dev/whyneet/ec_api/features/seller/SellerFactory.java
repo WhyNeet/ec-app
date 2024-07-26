@@ -5,10 +5,12 @@ import dev.whyneet.ec_api.core.dtos.seller.SellerDto;
 import dev.whyneet.ec_api.core.entities.Seller;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class SellerFactory {
     public Seller fromCreateDto(CreateSellerDto createSellerDto) {
-        return new Seller(null, createSellerDto.businessName(), createSellerDto.businessShortName(), createSellerDto.taxId(), createSellerDto.password(), false, null);
+        return new Seller(null, createSellerDto.businessName(), createSellerDto.businessShortName(), createSellerDto.taxId(), createSellerDto.password(), false, null, List.of());
     }
 
     public SellerDto toDto(Seller seller) {

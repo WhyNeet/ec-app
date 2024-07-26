@@ -2,9 +2,9 @@ package dev.whyneet.ec_api.core.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -19,7 +19,5 @@ public class Product {
     private Integer price;
     private String description;
 
-    private String sellerId;
-    @DocumentReference(lazy = true)
-    private Seller seller;
+    private ObjectId sellerId;
 }
