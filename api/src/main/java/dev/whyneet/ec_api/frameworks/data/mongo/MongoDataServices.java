@@ -2,9 +2,11 @@ package dev.whyneet.ec_api.frameworks.data.mongo;
 
 import dev.whyneet.ec_api.core.abstracts.IDataRepository;
 import dev.whyneet.ec_api.core.abstracts.IDataServices;
+import dev.whyneet.ec_api.core.entities.Product;
 import dev.whyneet.ec_api.core.entities.Seller;
 import dev.whyneet.ec_api.core.entities.Token;
 import dev.whyneet.ec_api.core.entities.User;
+import dev.whyneet.ec_api.frameworks.data.mongo.repository.ProductRepository;
 import dev.whyneet.ec_api.frameworks.data.mongo.repository.SellerRepository;
 import dev.whyneet.ec_api.frameworks.data.mongo.repository.TokenRepository;
 import dev.whyneet.ec_api.frameworks.data.mongo.repository.UserRepository;
@@ -18,6 +20,8 @@ public class MongoDataServices implements IDataServices {
     private TokenRepository tokenRepository;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public IDataRepository<User, String> users() {
@@ -32,5 +36,10 @@ public class MongoDataServices implements IDataServices {
     @Override
     public IDataRepository<Seller, String> sellers() {
         return sellerRepository;
+    }
+
+    @Override
+    public IDataRepository<Product, String> products() {
+        return productRepository;
     }
 }
