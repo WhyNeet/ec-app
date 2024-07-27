@@ -37,7 +37,6 @@ public class SellerController {
         return ResponseEntity.ok(sellerFactory.toDto(seller));
     }
 
-    @RequireAuthentication(audience = TokenAudience.Seller)
     @GetMapping("/{sellerId}/products")
     public ResponseEntity<List<ProductDto>> getSellerProducts(@PathVariable String sellerId) {
         ObjectId sellerObjectId = new ObjectId(sellerId);
