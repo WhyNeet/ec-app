@@ -28,6 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.3.2")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
 
     implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
 
@@ -38,7 +39,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
-    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("com.stripe:stripe-java:26.5.1")
 
     testCompileOnly("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
