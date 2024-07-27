@@ -43,7 +43,7 @@ public class ProductController {
     @RequireAuthentication
     @PostMapping("/purchase")
     public ResponseEntity<String> purchaseProducts(@RequestBody PurchaseProductsDto purchaseProductsDto) throws StripeException {
-        Session session = purchaseService.purchaseProducts(purchaseProductsDto.productIds());
+        Session session = purchaseService.purchaseProducts(purchaseProductsDto.products());
 
         return ResponseEntity.ok(session.getUrl());
     }

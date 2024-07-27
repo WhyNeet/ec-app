@@ -7,4 +7,9 @@ public class DevelopmentPaymentsConfiguration implements IApplicationPaymentsCon
     public String apiKey() {
         return System.getenv("STRIPE_API_KEY");
     }
+
+    @Override
+    public String webhookSecret() {
+        return System.getenv("STRIPE_WEBHOOK_SECRET");
+    }
 }

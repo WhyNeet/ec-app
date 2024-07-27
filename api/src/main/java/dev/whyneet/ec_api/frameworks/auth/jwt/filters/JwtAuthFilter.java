@@ -65,12 +65,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         Optional<Object> authorizedEntity;
 
-        if (token.getAudience() == TokenAudience.User) {
-            Optional<User> user = userService.getUserById(token.getSubject());
-            authorizedEntity = user.map(u -> u);
-        } else {
+        if (token.getAudience() == TokenAudience.Seller) {
             Optional<Seller> seller = sellerService.getSellerById(token.getSubject());
             authorizedEntity = seller.map(s -> s);
+        } else {
+            Optional<User> user = userService.getUserById(token.getSubject());
+            authorizedEntity = user.map(u -> u);
         }
 
 

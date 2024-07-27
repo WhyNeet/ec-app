@@ -20,6 +20,7 @@ public class Token {
     private Claims claims;
     @Transient
     private String subject;
+    @Transient
     private TokenAudience audience;
 
     public Token(Claims claims) {
