@@ -9,6 +9,7 @@ public interface IDataRepository<Entity, Id> {
     Optional<Entity> getById(Id id);
     <S extends Entity> Optional<S> findOne(Example<S> example);
     <S extends Entity> List<S> findAll(Example<S> example);
+    List<Entity> findAllById(Iterable<String> ids);
     Entity save(Entity entity);
     void deleteById(Id id);
 }
