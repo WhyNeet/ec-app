@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class PurchaseService {
+public class PaymentService {
     @Autowired
     private ProductService productService;
 
@@ -33,7 +33,7 @@ public class PurchaseService {
         SessionCreateParams params = SessionCreateParams.builder()
                 .setSuccessUrl("http://localhost:8080/api/purchase/success")
                 .setCancelUrl("http://localhost:8080/api/purchase/cancel").setMode(SessionCreateParams.Mode.PAYMENT)
-                .addAllLineItem(items).build();
+                .addAllLineItem(items).putMetadata("productIds", products.stream().map(Product::getId).collect(Collectors.joining(","))).build();
 
         Session session = Session.create(params);
 

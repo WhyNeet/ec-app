@@ -8,7 +8,7 @@ import dev.whyneet.ec_api.core.dtos.product.PurchaseProductsDto;
 import dev.whyneet.ec_api.core.entities.Product;
 import dev.whyneet.ec_api.core.entities.Seller;
 import dev.whyneet.ec_api.core.entities.TokenAudience;
-import dev.whyneet.ec_api.features.payment.PurchaseService;
+import dev.whyneet.ec_api.features.payment.PaymentService;
 import dev.whyneet.ec_api.features.product.ProductFactory;
 import dev.whyneet.ec_api.features.product.ProductService;
 import dev.whyneet.ec_api.frameworks.auth.validation.RequireAuthentication;
@@ -30,7 +30,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private PurchaseService purchaseService;
+    private PaymentService paymentService;
 
     @RequireAuthentication(audience = TokenAudience.Seller)
     @PostMapping("/create")
@@ -43,7 +43,7 @@ public class ProductController {
     @RequireAuthentication
     @PostMapping("/purchase")
     public ResponseEntity<String> purchaseProducts(@RequestBody PurchaseProductsDto purchaseProductsDto) throws StripeException {
-        Session session = purchaseService.purchaseProducts(purchaseProductsDto.products());
+        Session session = paymentService.purchaseProducts(purchaseProductsDto.products());
 
         return ResponseEntity.ok(session.getUrl());
     }
