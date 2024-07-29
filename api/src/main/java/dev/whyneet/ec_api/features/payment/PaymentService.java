@@ -36,11 +36,13 @@ public class PaymentService {
                 .setSuccessUrl("http://localhost:8080/api/purchase/success")
                 .setCancelUrl("http://localhost:8080/api/purchase/cancel").setMode(SessionCreateParams.Mode.PAYMENT)
                 .addAllLineItem(items)
-                .putMetadata("productIds", products.stream().map(Product::getId).collect(Collectors.joining(",")))
-                .putMetadata("productQuantities", productIds.stream()
-                        .map(PurchaseProductsDto.ProductPurchaseDataDto::quantity).map(Object::toString)
-                        .collect(Collectors.joining(",")))
-                .putMetadata("userId", userId)
+                .setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder()
+                        .putMetadata("productIds", products.stream().map(Product::getId)
+                                .collect(Collectors.joining(",")))
+                        .putMetadata("productQuantities", productIds.stream()
+                                .map(PurchaseProductsDto.ProductPurchaseDataDto::quantity).map(Object::toString)
+                                .collect(Collectors.joining(",")))
+                        .putMetadata("userId", userId).build())
                 .build();
 
         Session session = Session.create(params);

@@ -8,6 +8,7 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.model.StripeObject;
 import com.stripe.net.Webhook;
 import dev.whyneet.ec_api.core.abstracts.configuration.IApplicationConfiguration;
+import dev.whyneet.ec_api.features.order.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 public class PaymentController {
     @Autowired
     private IApplicationConfiguration configuration;
+    @Autowired
+    private OrderService orderService;
 
     @PostMapping("/webhook")
     public void paymentWebhook(HttpServletRequest request) throws IOException, SignatureVerificationException, EventDataObjectDeserializationException {
@@ -37,7 +41,13 @@ public class PaymentController {
         if (event.getType().equals("payment_intent.succeeded")) {
             PaymentIntent paymentIntent = (PaymentIntent) stripeObject;
             String[] productIds = paymentIntent.getMetadata().get("productIds").split(",");
-            // TODO: add orders to the database
+            List<Integer> productQuantities = Arrays.stream(paymentIntent.getMetadata().get("productQuantities")
+                    .split(",")).map(Integer::parseInt).toList();
+            String userId = paymentIntent.getMetadata().get("userId");
+
+            for (int i = 0; i < productIds.length; i++) {
+                orderService.createOrder(productIds[i], userId, productQuantities.get(i));
+            }
         }
     }
 }
