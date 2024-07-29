@@ -8,6 +8,7 @@ import dev.whyneet.ec_api.core.dtos.product.PurchaseProductsDto;
 import dev.whyneet.ec_api.core.entities.Product;
 import dev.whyneet.ec_api.core.entities.Seller;
 import dev.whyneet.ec_api.core.entities.TokenAudience;
+import dev.whyneet.ec_api.core.entities.User;
 import dev.whyneet.ec_api.features.payment.PaymentService;
 import dev.whyneet.ec_api.features.product.ProductFactory;
 import dev.whyneet.ec_api.features.product.ProductService;
@@ -42,8 +43,8 @@ public class ProductController {
 
     @RequireAuthentication
     @PostMapping("/purchase")
-    public ResponseEntity<String> purchaseProducts(@RequestBody PurchaseProductsDto purchaseProductsDto) throws StripeException {
-        Session session = paymentService.purchaseProducts(purchaseProductsDto.products());
+    public ResponseEntity<String> purchaseProducts(@RequestBody PurchaseProductsDto purchaseProductsDto, @AuthenticationPrincipal User user) throws StripeException {
+        Session session = paymentService.purchaseProducts(purchaseProductsDto.products(), user.getId());
 
         return ResponseEntity.ok(session.getUrl());
     }
