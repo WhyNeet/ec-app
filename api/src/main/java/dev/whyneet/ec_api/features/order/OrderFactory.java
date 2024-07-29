@@ -9,4 +9,8 @@ public class OrderFactory {
     public OrderDto toDto(Order order) {
         return new OrderDto(order.getId(), order.getProductId(), order.getUserId(), order.getQuantity());
     }
+
+    public Order fromParams(String productId, String userId, int quantity) {
+        return new Order(null, productId, userId, quantity);
+    }
 }

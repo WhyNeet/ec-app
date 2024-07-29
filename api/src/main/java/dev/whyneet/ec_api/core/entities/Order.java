@@ -12,6 +12,6 @@ public class Order {
     @Id
     private String id;
     private String productId;
-    private Integer quantity;
     private String userId;
+    private Integer quantity;
 }
